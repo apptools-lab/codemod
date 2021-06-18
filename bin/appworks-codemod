@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const path = require('path');
+const { spawnSync } = require('child_process');
+const glob = require('glob');
+const pkg = require('../package.json');
+const { getProjectType, getProjectFramework, getProjectLanguageType } = require('@appworks/project-utils');
+
+const jscodeshiftExecutable = require.resolve('.bin/jscodeshift');
+
+const args = process.argv.slice(2);
+
+if (args.length === 1) {
+  if (args[0] === '-v' || args[0] === '--version') {
+    console.log(pkg.version);
+    process.exit();
+  } else {
+    console.log(
+      'Codemods for updating Rax and React APIs.\n' +
+      'Usage\n' +
+      '$ npx @appworks/codemod <transform> <path> <...options>\n' +
+      '  transform    One of the choices from https://github.com/appworks-lab/codemod/blob/master/docs\n' +
+      '  path         directory to transform. \n' +
+      '  Options for jscodeshift https://www.npmjs.com/package/jscodeshift like:\n' +
+      '  --dry              Dry run (no changes are made to files)\n' +
+      '  --print            Print transformed files to your terminal',
+    );
+    process.exit();
+  }
+} else {
+  run();
+}
+
+// npx @appworks/codemod <transform> <path> [...options?]
+async function run() {
+  const [transform, target] = args;
+
+  let jscodeshiftArgs = [];
+  jscodeshiftArgs = jscodeshiftArgs.concat(['--transform', require.resolve(path.join(__dirname, '../transforms/', transform))]);
+  jscodeshiftArgs = jscodeshiftArgs.concat(glob.sync('**/*', { cwd: target, ignore: ['**/node_modules/**'], nodir: true, realpath: true }));
+
+  if (args.length > 2) {
+    jscodeshiftArgs = jscodeshiftArgs.concat(args.slice(2));
+  }
+
+  jscodeshiftArgs = jscodeshiftArgs.concat([
+    `--projectType=${await getProjectType(target, true)}`,
+    `--projectFramework=${await getProjectFramework(target)}`,
+    `--projectLanguageType=${await getProjectLanguageType(target)}`,
+  ]);
+
+  spawnSync(jscodeshiftExecutable, jscodeshiftArgs, {
+    stdio: 'inherit',
+    stripEof: false,
+  });
+}

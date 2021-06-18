@@ -1,0 +1,41 @@
+{
+  "name": "@appworks/codemod",
+  "description": "AppWorks codemod scripts",
+  "version": "0.1.0",
+  "keywords": [
+    "appworks",
+    "codemod",
+    "rax-app",
+    "icejs"
+  ],
+  "bin": {
+    "appworks-codemod": "bin/appworks-codemod"
+  },
+  "files": [
+    "bin/",
+    "docs/",
+    "src/",
+    "transforms/"
+  ],
+  "main": "src/index.js",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint --ext .js,ts ./"
+  },
+  "dependencies": {
+    "@appworks/project-utils": "^0.1.0",
+    "execa": "^5.1.1",
+    "glob": "^7.1.7",
+    "gray-matter": "^4.0.3",
+    "jscodeshift": "^0.11.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@iceworks/spec": "^1.3.2",
+    "eslint": "^7.28.0",
+    "husky": "^6.0.0"
+  }
+}
