@@ -5,8 +5,6 @@ const { getProjectType, getProjectFramework, getProjectLanguageType } = require(
 
 const jscodeshiftExecutable = require.resolve('.bin/jscodeshift');
 
-const REPOSITORY = 'https://github.com/appworks-lab/codemod';
-
 async function execute(cwd, files, transforms, mode) {
   // Add project info to transform option
   const transformOptions = [
@@ -28,23 +26,22 @@ async function execute(cwd, files, transforms, mode) {
       // Remove all colors/styles from strings https://stackoverflow.com/questions/25245716/remove-all-ansi-colors-styles-from-strings
       const output = stdout.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 
-      if (mode === 'run') {
-        return output;
-      } else {
-        // jscodeshift show 0 ok if not matched
-        if (!/\n0 ok\n/.test(output)) {
-          const transformName = path.basename(transform, path.extname(transform));
-          const transformConfig = config[transformName] || {};
-          if (transformConfig.severity) {
-            return {
-              ...transformConfig,
-              transform: transformName,
-              docs: `${REPOSITORY}/tree/master/transforms/docs/${transformName}.md`,
-            };
-          }
-        }
-        return null;
+      const transformName = path.basename(transform, path.extname(transform));
+      const transformConfig = config[transformName] || {};
+      if (
+        mode === 'run' ||
+        // jscodeshift show 0 ok if not matched and return codemod which severity >= 1
+        (!/\n0 ok\n/.test(output) && transformConfig.severity)
+      ) {
+        return {
+          ...transformConfig,
+          transform: transformName,
+          docs: `https://github.com/appworks-lab/codemod/tree/master/transforms/docs/${transformName}.md`,
+          mode,
+          output,
+        };
       }
+      return null;
     };
   });
 
