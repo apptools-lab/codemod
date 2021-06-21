@@ -1,7 +1,6 @@
-const fs = require('fs');
 const path = require('path');
 const execa = require('execa');
-const matter = require('gray-matter');
+const config = require('../transforms/config.json');
 const { getProjectType, getProjectFramework, getProjectLanguageType } = require('@appworks/project-utils');
 
 const jscodeshiftExecutable = require.resolve('.bin/jscodeshift');
@@ -35,16 +34,13 @@ async function execute(cwd, files, transforms, mode) {
         // jscodeshift show 0 ok if not matched
         if (!/\n0 ok\n/.test(output)) {
           const transformName = path.basename(transform, path.extname(transform));
-          const transformDocFile = path.join(__dirname, `../docs/${transformName}.md`);
-          if (fs.existsSync(transformDocFile)) {
-            const config = matter(fs.readFileSync(transformDocFile, 'utf-8')).data || {};
-            if (config.severity) {
-              return {
-                ...config,
-                transform: transformName,
-                docs: `${REPOSITORY}/tree/master/docs/${transformName}.md`,
-              };
-            }
+          const transformConfig = config[transformName] || {};
+          if (transformConfig.severity) {
+            return {
+              ...transformConfig,
+              transform: transformName,
+              docs: `${REPOSITORY}/tree/master/transforms/docs/${transformName}.md`,
+            };
           }
         }
         return null;

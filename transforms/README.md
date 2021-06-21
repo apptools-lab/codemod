@@ -12,37 +12,40 @@ transform 入参会增加 projectType（rax,react,vue）、projectFramework(rax-
 
 ## 3. 文档说明
 
-在 [jscodeshift](https://www.npmjs.com/package/jscodeshift) transform 的开发逻辑不变的基础上，增加 markdown 说明文档配置方案。
+在 [jscodeshift](https://www.npmjs.com/package/jscodeshift) transform 的开发逻辑不变的基础上，增加 markdown 说明文档。
 
-文档名和 transform 名称对应。check 方法命中的 codemod 后，会查询对应 markdown 说明配置文件，获取此条 codemod 信息，并拼接此文档地址提示用户阅读。
+文档名和 transform 名称对应。check 方法命中的 codemod 后，会拼接此文档地址提示用户阅读。
+
+## 4. 配置说明
 
 仓库目录结构如下：
 
 ```markdown
-codemod                                                 
-├─ docs                                     
-│  └─ plugin-rax-component-to-component.md                     
-├─ transforms                               
-│  └─ plugin-rax-component-to-component.js  
-└─ package.json                             
-
+codemod  
+├─ transforms  
+| ├─ docs  
+│ | └─ plugin-rax-component-to-component.md  
+| ├─ config.json
+│ └─ plugin-rax-component-to-component.js  
+└─ package.json
 ```
 
-markdown 说明配置文件示例如下：
+check 方法命中的 codemod 后，查询对应 codemod 说明配置，获取此条 codemod 信息，config.json 说明配置文件示例如下：
 
-```markdown
----
-title: Component 工程升级
-message: 切换 rax-component-plugin
-severity: 1
-npm-deprecate: "plugin-rax-component-to-component@<1.x" 
----
-
-说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明说明
-
+```json
+{
+  "plugin-rax-component-to-component": {
+    "title": "Rax 组件工程升级",
+    "message": "从 plugin-rax-component 升级到 plugin-component",
+    "severity": 1,
+    "npm-deprecate": "build-plugin-rax-component"
+  }
+}
 ```
 
-* severity：其值 > 0 的 codemod 会在用户启动 VS Code 插件时给予提示。
-* npm-deprecate：非必须，配置命中对应 codemod 后用户编辑到对应 npm 包时会有删除线提示。
+键值为 transform 名称，字段说明：
 
-**注意：增加 transform 后，务必补充对应文档！**
+- severity：其值 > 0 的 codemod 会在用户启动 VS Code 插件时给予提示。
+- npm-deprecate：非必须，配置命中对应 codemod 后用户编辑到对应 npm 包时会有删除线提示。
+
+**注意：增加 transform 后，务必补充对应配置和文档！**

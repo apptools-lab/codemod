@@ -1,10 +1,3 @@
----
-title: Rax 组件工程升级
-message: 从 plugin-rax-component 升级到 plugin-component
-severity: 1
-npm-deprecate: "build-plugin-rax-component"
----
-
 # 组件工程升级
 
 ## 从 plugin-rax-component 升级到 plugin-component
