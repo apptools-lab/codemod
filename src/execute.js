@@ -33,7 +33,7 @@ async function execute(cwd, files, transforms, mode) {
         // check mode return can run codemods when
         // 1. jscodeshift show not 0 ok if matched
         // 2. codemod which severity >= 1
-        (!/\n0 ok\n/.test(output) && transformConfig.severity)
+        (!/\n0 ok\n/.test(output) && transformConfig.severity >= 1)
       ) {
         return {
           ...transformConfig,
