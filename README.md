@@ -47,6 +47,7 @@ interface IResult {
   severity: 0 | 1 | 2;
   docs: string;
   "npm-deprecate"?: string;
+  output: string;
 }
 ```
 
@@ -83,7 +84,9 @@ Options:
 
 Return:
 
-- output: string, the codemod cli output.
+the codemod cli output.
+
+- result: IResult, run codemod result.
 
 Example:
 
