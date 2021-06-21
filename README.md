@@ -28,6 +28,23 @@ $ npx @appworks/codemod plugin-rax-component-to-component ./
 $ npm i @appworks/codemod --save
 ```
 
+#### Interface
+
+IResult:
+
+```typescript
+interface IResult {
+  transform: string; // transform key, see `Included Transforms`
+  title: string; // transform description title
+  message: string; // transform description message
+  severity: 0 | 1 | 2; // 0: advice 1: warning 2: error
+  mode: "run" | "check"; // mode, see below methods
+  docs: string; // docs url
+  output: string; // jscodeshift CLI output
+  "npm-deprecate"?: string; // same as https://docs.npmjs.com/cli/v7/commands/npm-deprecate/
+}
+```
+
 #### Check
 
 You can retrieve the recommended codemod of the current project through the `check` method.
@@ -38,18 +55,6 @@ Options:
 - files: string[], the target directory files path array
 
 Return:
-
-```typescript
-interface IResult {
-  transform: string;
-  title: string;
-  message: string;
-  severity: 0 | 1 | 2;
-  docs: string;
-  "npm-deprecate"?: string;
-  output: string;
-}
-```
 
 - results: IResult[], the target project recommended codemod info array.
 
@@ -83,8 +88,6 @@ Options:
 - transform: string, the name of transform, see available transforms below.
 
 Return:
-
-the codemod cli output.
 
 - result: IResult, run codemod result.
 
