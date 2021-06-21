@@ -97,8 +97,8 @@ glob(
   "**/*",
   { cwd: dir, ignore: ["**/node_modules/**"], nodir: true, realpath: true },
   function (er, files) {
-    run(dir, files, "plugin-rax-component-to-component").then((output) => {
-      console.log(output);
+    run(dir, files, "plugin-rax-component-to-component").then((result) => {
+      console.log(result);
     });
   }
 );
