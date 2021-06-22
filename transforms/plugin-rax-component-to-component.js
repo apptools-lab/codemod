@@ -28,6 +28,7 @@ module.exports = (fileInfo, api) => {
     //   +    "build-plugin-component"
     //     ]
     //   }
+    let hasChanged = false;
     let config = JSON.parse(fileInfo.source);
     const pluginList = config.plugins || [];
 
@@ -39,9 +40,13 @@ module.exports = (fileInfo, api) => {
           delete config.forceInline;
         }
         config.plugins.splice(i, 1, 'build-plugin-component');
+        hasChanged = true;
       }
     }
-    return JSON.stringify(config, null, '  ');
+    if (hasChanged) {
+      return JSON.stringify(config, null, '  ');
+    }
+    return null;
   } else if (basename === 'package.json') {
     // {
     //   -  "build-plugin-rax-component": "^0.2.14",
@@ -52,8 +57,9 @@ module.exports = (fileInfo, api) => {
     if (devDependencies['build-plugin-rax-component']) {
       devDependencies['build-plugin-component'] = '^1.0.0';
       delete devDependencies['build-plugin-rax-component'];
+      return JSON.stringify(config, null, '  ');
     }
-    return JSON.stringify(config, null, '  ');
+    return null;
   } else if (DEMO_FILE_REG.test(fileInfo.path)) {
     // demo/xxx.jsx -> demo/xxx.md
     // + ---
