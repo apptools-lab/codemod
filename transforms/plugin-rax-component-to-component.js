@@ -11,7 +11,7 @@ const changeFileExt = (file, ext) => {
   return path.join(path.dirname(file), path.basename(file, path.extname(file)) + ext);
 };
 
-module.exports = (fileInfo, api) => {
+module.exports = (fileInfo, api, options) => {
   const j = api.jscodeshift;
   const basename = path.basename(fileInfo.path);
   if (basename === 'build.json') {
@@ -60,7 +60,7 @@ module.exports = (fileInfo, api) => {
       return JSON.stringify(config, null, '  ');
     }
     return null;
-  } else if (DEMO_FILE_REG.test(fileInfo.path)) {
+  } else if (options.dry !== true && DEMO_FILE_REG.test(fileInfo.path)) {
     // demo/xxx.jsx -> demo/xxx.md
     // + ---
     // + title: Baisc
