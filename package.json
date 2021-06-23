@@ -13,7 +13,6 @@
   },
   "files": [
     "bin/",
-    "docs/",
     "src/",
     "transforms/"
   ],

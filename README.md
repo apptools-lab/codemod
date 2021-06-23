@@ -116,4 +116,4 @@ glob(
 
 ### 1. `plugin-rax-component-to-component`
 
-Update `plugin-rax-component` to `plugin-component`. [docs](https://github.com/appworks-lab/codemod/blob/master/docs/plugin-rax-component-to-component.md)
+Update `plugin-rax-component` to `plugin-component`. [docs](https://github.com/appworks-lab/codemod/blob/master/transforms/docs/plugin-rax-component-to-component.md)
