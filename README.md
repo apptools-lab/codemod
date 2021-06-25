@@ -39,7 +39,7 @@ Options:
 
 Return:
 
-- results: IResult[], the target project recommended codemod info array.
+- results: IResult[] (see interface), the target project recommended codemod info array.
 
 Example:
 
@@ -72,7 +72,7 @@ Options:
 
 Return:
 
-- result: IResult, run codemod result.
+- result: IResult (see interface), run codemod result.
 
 Example:
 
