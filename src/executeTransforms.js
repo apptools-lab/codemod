@@ -5,7 +5,7 @@ const { getProjectType, getProjectFramework, getProjectLanguageType } = require(
 
 const jscodeshiftExecutable = require.resolve('.bin/jscodeshift');
 
-async function execute(cwd, files, transforms, mode) {
+async function executeTransforms(cwd, files, transforms, mode) {
   // Add project info to transform option
   const transformOptions = [
     `--projectType=${await getProjectType(cwd, true)}`,
@@ -51,4 +51,4 @@ async function execute(cwd, files, transforms, mode) {
   return results.filter((result) => result);
 }
 
-module.exports = execute;
+module.exports = executeTransforms;

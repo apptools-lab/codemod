@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-'use strict';
-
+const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const glob = require('glob');
@@ -37,18 +36,42 @@ if (args.length === 1) {
 async function run() {
   const [transform, target] = args;
 
+  let dir;
+  let files;
+  let transformFile;
+
+  try {
+    transformFile = require.resolve(path.join(__dirname, '../transforms/', transform));
+    // Get target files
+    if (fs.statSync(target).isFile()) {
+      dir = path.dirname(target);
+      files = [target];
+    } else {
+      dir = target;
+      files = glob.sync('**/*', { cwd: target, ignore: ['**/node_modules/**'], nodir: true, realpath: true });
+    }
+  } catch (e) {
+    // Check transform and target
+    if (!transformFile) {
+      console.log(`Transform '${transform}' not found, please check.`);
+    } else {
+      console.log(`Path '${target}' not found, please check.`);
+    }
+    process.exit();
+  }
+
   let jscodeshiftArgs = [];
-  jscodeshiftArgs = jscodeshiftArgs.concat(['--transform', require.resolve(path.join(__dirname, '../transforms/', transform))]);
-  jscodeshiftArgs = jscodeshiftArgs.concat(glob.sync('**/*', { cwd: target, ignore: ['**/node_modules/**'], nodir: true, realpath: true }));
+  jscodeshiftArgs = jscodeshiftArgs.concat(['--transform', transformFile]);
+  jscodeshiftArgs = jscodeshiftArgs.concat(files);
 
   if (args.length > 2) {
     jscodeshiftArgs = jscodeshiftArgs.concat(args.slice(2));
   }
 
   jscodeshiftArgs = jscodeshiftArgs.concat([
-    `--projectType=${await getProjectType(target, true)}`,
-    `--projectFramework=${await getProjectFramework(target)}`,
-    `--projectLanguageType=${await getProjectLanguageType(target)}`,
+    `--projectType=${await getProjectType(dir, true)}`,
+    `--projectFramework=${await getProjectFramework(dir)}`,
+    `--projectLanguageType=${await getProjectLanguageType(dir)}`,
   ]);
 
   spawnSync(jscodeshiftExecutable, jscodeshiftArgs, {

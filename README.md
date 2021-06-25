@@ -2,12 +2,18 @@
 
 AppWorks codemod scripts for [rax](https://rax.js.org/), [ice](https://ice.work/) and react project.
 
+## Install
+
+```bash
+$ npm i @appworks/codemod -g
+```
+
 ## Usage
 
 ### 1. CLI
 
 ```bash
-$ npx @appworks/codemod <transform> <path> [...options?]
+$ appworks-codemod <transform> <path> [...options?]
 ```
 
 - `transform` - name of transform, see available transforms below.
@@ -17,37 +23,12 @@ $ npx @appworks/codemod <transform> <path> [...options?]
 Example:
 
 ```bash
-$ npx @appworks/codemod plugin-rax-component-to-component ./
+$ appworks-codemod plugin-rax-component-to-component ./
 ```
 
 ### 2. API
 
-#### Install
-
-```bash
-$ npm i @appworks/codemod --save
-```
-
-#### Interface
-
-IResult:
-
-```typescript
-interface IResult {
-  transform: string; // transform key, see `Included Transforms`
-  title: string; // transform description title
-  title_en: string; 
-  message: string; // transform description message
-  message_en: string; 
-  severity: 0 | 1 | 2; // 0: advice 1: warning 2: error
-  mode: "run" | "check"; // mode, see below methods
-  docs: string; // docs url
-  output: string; // jscodeshift CLI output
-  npm_deprecate?: string; // same as https://docs.npmjs.com/cli/v7/commands/npm-deprecate/
-}
-```
-
-#### Check
+#### Check()
 
 You can retrieve the recommended codemod of the current project through the `check` method.
 
@@ -79,7 +60,7 @@ glob(
 );
 ```
 
-#### Run
+#### Run()
 
 You can use the `run` method to execute specific codemod.
 
@@ -112,8 +93,27 @@ glob(
 );
 ```
 
+#### Interface
+
+IResult:
+
+```typescript
+interface IResult {
+  transform: string; // transform key, see `Included Transforms`
+  title: string; // transform description title
+  title_en: string; 
+  message: string; // transform description message
+  message_en: string; 
+  severity: 0 | 1 | 2; // 0: advice 1: warning 2: error
+  mode: "run" | "check"; // mode, see below methods
+  docs: string; // docs url
+  output: string; // jscodeshift CLI output
+  npm_deprecate?: string; // same as https://docs.npmjs.com/cli/v7/commands/npm-deprecate/
+}
+```
+
 ## Included Transforms
 
 ### 1. `plugin-rax-component-to-component`
 
-Update `plugin-rax-component` to `plugin-component`. [docs](https://github.com/appworks-lab/codemod/blob/master/transforms/docs/plugin-rax-component-to-component.md)
+Update `plugin-rax-component` to `plugin-component`. [docs](./transforms/docs/plugin-rax-component-to-component.md)
