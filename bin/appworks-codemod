@@ -2,12 +2,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { spawnSync } = require('child_process');
 const glob = require('glob');
+const executeTransforms = require('../src/executeTransforms');
 const pkg = require('../package.json');
-const { getProjectType, getProjectFramework, getProjectLanguageType } = require('@appworks/project-utils');
-
-const jscodeshiftExecutable = require.resolve('.bin/jscodeshift');
 
 const args = process.argv.slice(2);
 
@@ -32,7 +29,6 @@ if (args.length === 1) {
   run();
 }
 
-// npx @appworks/codemod <transform> <path> [...options?]
 async function run() {
   const [transform, target] = args;
 
@@ -60,22 +56,11 @@ async function run() {
     process.exit();
   }
 
-  let jscodeshiftArgs = [];
-  jscodeshiftArgs = jscodeshiftArgs.concat(['--transform', transformFile]);
-  jscodeshiftArgs = jscodeshiftArgs.concat(files);
-
-  if (args.length > 2) {
-    jscodeshiftArgs = jscodeshiftArgs.concat(args.slice(2));
-  }
-
-  jscodeshiftArgs = jscodeshiftArgs.concat([
-    `--projectType=${await getProjectType(dir, true)}`,
-    `--projectFramework=${await getProjectFramework(dir)}`,
-    `--projectLanguageType=${await getProjectLanguageType(dir)}`,
-  ]);
-
-  spawnSync(jscodeshiftExecutable, jscodeshiftArgs, {
-    stdio: 'inherit',
-    stripEof: false,
-  });
+  await executeTransforms(
+    dir,
+    files,
+    [transformFile],
+    'run',
+    args.length > 2 ? args.slice(2) : [],
+  );
 }
