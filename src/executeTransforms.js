@@ -5,7 +5,7 @@ const config = require('../transforms/config.json');
 
 const jscodeshiftExecutable = require.resolve('.bin/jscodeshift');
 
-async function executeTransforms(cwd, files, transforms, mode, jscodeshiftOptions) {
+async function executeTransforms(cwd, files, transforms, mode, jscodeshiftAgs) {
   // Add project info to transform option
   const transformOptions = [
     `--projectType=${await getProjectType(cwd, true)}`,
@@ -20,7 +20,7 @@ async function executeTransforms(cwd, files, transforms, mode, jscodeshiftOption
 
       args = args.concat(['--transform', transform]);
       args = args.concat(files);
-      args = args.concat(jscodeshiftOptions || []);
+      args = args.concat(jscodeshiftAgs || []);
       args = args.concat(transformOptions);
 
       const transformName = path.basename(transform, path.extname(transform));
