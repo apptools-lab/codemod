@@ -105,10 +105,10 @@ interface IResult {
   message: string; // transform description message
   message_en: string; 
   severity: 0 | 1 | 2; // 0: advice 1: warning 2: error
-  mode: "run" | "check"; // mode, see below methods
+  mode: "run" | "check"; // mode, see API
   docs: string; // docs url
   output: string; // jscodeshift CLI output
-  npm_deprecate?: string; // same as https://docs.npmjs.com/cli/v7/commands/npm-deprecate/
+  npm_deprecate?: string; // same as https://docs.npmjs.com/cli/v7/commands/npm-deprecate/ 
 }
 ```
 

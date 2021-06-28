@@ -19,7 +19,7 @@ if (args.length === 1) {
     console.log(
       'Codemods for updating Rax and React APIs.\n' +
       'Usage\n' +
-      '$ npx @appworks/codemod <transform> <path> <...options>\n' +
+      '$ appworks-codemod <transform> <path> [...options?]\n' +
       '  transform    One of the choices from https://github.com/appworks-lab/codemod/blob/master/transforms/docs\n' +
       '  path         directory to transform. \n' +
       '  Options for jscodeshift https://www.npmjs.com/package/jscodeshift like:\n' +
