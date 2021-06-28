@@ -8,25 +8,23 @@ const pkg = require('../package.json');
 
 const args = process.argv.slice(2);
 
-if (args.length === 1) {
-  if (args[0] === '-v' || args[0] === '--version') {
-    console.log(pkg.version);
-    process.exit();
-  } else {
-    console.log(
-      'Codemods for updating Rax and React APIs.\n' +
-      'Usage\n' +
-      '$ appworks-codemod <transform> <path> [...options?]\n' +
-      '  transform    One of the choices from https://github.com/appworks-lab/codemod/blob/master/transforms/docs\n' +
-      '  path         directory to transform. \n' +
-      '  Options for jscodeshift https://www.npmjs.com/package/jscodeshift like:\n' +
-      '  --dry              Dry run (no changes are made to files)\n' +
-      '  --print            Print transformed files to your terminal',
-    );
-    process.exit();
-  }
-} else {
+if (args.length >= 2) {
   run();
+} else if (args.length === 1 && (args[0] === '-v' || args[0] === '--version')) {
+  console.log(pkg.version);
+  process.exit(0);
+} else {
+  console.log(
+    'Codemods for updating Rax and React APIs.\n' +
+    'Usage\n' +
+    '$ appworks-codemod <transform> <path> [...options?]\n' +
+    '  transform    One of the choices from https://github.com/appworks-lab/codemod/blob/master/transforms/docs\n' +
+    '  path         directory to transform. \n' +
+    '  Options for jscodeshift https://www.npmjs.com/package/jscodeshift like:\n' +
+    '  --dry              Dry run (no changes are made to files)\n' +
+    '  --print            Print transformed files to your terminal',
+  );
+  process.exit(0);
 }
 
 async function run() {
@@ -34,10 +32,10 @@ async function run() {
 
   let dir;
   let files;
-  let transformFile;
+  let pathToTransformFile;
 
   try {
-    transformFile = require.resolve(path.join(__dirname, '../transforms/', transform));
+    pathToTransformFile = require.resolve(path.join(__dirname, '../transforms/', transform));
     // Get target files
     if (fs.statSync(target).isFile()) {
       dir = path.dirname(target);
@@ -48,18 +46,18 @@ async function run() {
     }
   } catch (e) {
     // Check transform and target
-    if (!transformFile) {
-      console.log(`Transform '${transform}' not found, please check.`);
+    if (!pathToTransformFile) {
+      console.log(`Transform '${transform}' not found, for example you can use 'plugin-rax-component-to-component'.`);
     } else {
       console.log(`Path '${target}' not found, please check.`);
     }
-    process.exit();
+    process.exit(1);
   }
 
   await executeTransforms(
     dir,
     files,
-    [transformFile],
+    [pathToTransformFile],
     'run',
     args.length > 2 ? args.slice(2) : [],
   );
