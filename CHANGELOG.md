@@ -1,5 +1,9 @@
 # changelog
 
+## 0.1.2
+
+- Feat: update jscodeshift executable path.
+
 ## 0.1.1
 
 - Feat: add typings.
