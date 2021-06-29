@@ -3,7 +3,10 @@ const execa = require('execa');
 const { getProjectType, getProjectFramework, getProjectLanguageType } = require('@appworks/project-utils');
 const config = require('../transforms/config.json');
 
-const jscodeshiftExecutable = require.resolve('.bin/jscodeshift');
+// Using 'jscodeshift/bin/jscodeshift' instead of '.bin/jscodeshift'
+// For VS Code Extension environment which has been deleted '.bin/jscodeshift' by vsce
+// By the way '!node_modules/.bin/jscodeshift' in .vsceignore doesn't work
+const jscodeshiftExecutable = require.resolve('jscodeshift/bin/jscodeshift');
 
 async function executeTransforms(cwd, files, transforms, mode, jscodeshiftAgs) {
   // Add project info to transform option
