@@ -1,0 +1,10 @@
+{
+  "plugin-rax-component-to-component": {
+    "title": "Rax 组件工程升级",
+    "title_en": "Rax component project upgrade",
+    "message": "从 plugin-rax-component 升级到 plugin-component",
+    "message_en": "upgrade from plugin-rax-component to plugin-component",
+    "severity": 1,
+    "npm_deprecate": "build-plugin-rax-component"
+  }
+}
