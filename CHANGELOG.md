@@ -1,5 +1,8 @@
 # changelog
 
+## 0.1.3
+
+- Feat: add transform - `lint-config-to-spec`
 ## 0.1.2
 
 - Feat: update jscodeshift executable path.

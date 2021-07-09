@@ -117,3 +117,7 @@ interface IResult {
 ### 1. `plugin-rax-component-to-component`
 
 Update `plugin-rax-component` to `plugin-component`. [docs](./transforms/docs/plugin-rax-component-to-component.md)
+
+### 2. `lint-config-to-spec`
+
+Follow Alibaba FED lint rules, and use `@iceworks/spec` best practices. [docs](./transforms/docs/lint-config-to-spec.md)
