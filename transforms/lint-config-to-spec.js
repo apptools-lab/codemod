@@ -20,7 +20,7 @@ const LIB_CONFIG = {
         'const { getESLintConfig } = require(\'@iceworks/spec\');\n' +
         '\n' +
         '// https://www.npmjs.com/package/@iceworks/spec\n' +
-        'module.exports = getESLintConfig(\'<%= ruleKey %>\'<% if (customConfig) { %>, <%- JSON.stringify(customConfig, null, \'  \') %><% } %>);\n',
+        'module.exports = getESLintConfig(\'<%= eslintRuleKey %>\'<% if (customConfig) { %>, <%- JSON.stringify(customConfig, null, \'  \') %><% } %>);\n',
     },
   },
   stylelint: {
@@ -39,7 +39,7 @@ const LIB_CONFIG = {
         'const { getStylelintConfig } = require(\'@iceworks/spec\');\n' +
         '\n' +
         '// https://www.npmjs.com/package/@iceworks/spec\n' +
-        'module.exports = getStylelintConfig(\'<%= eslintRuleKey %>\'<% if (customConfig) { %>, <%- JSON.stringify(customConfig, null, \'  \') %><% } %>);\n',
+        'module.exports = getStylelintConfig(\'<%= ruleKey %>\'<% if (customConfig) { %>, <%- JSON.stringify(customConfig, null, \'  \') %><% } %>);\n',
     },
   },
   prettier: {
