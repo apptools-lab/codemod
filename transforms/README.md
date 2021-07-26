@@ -4,7 +4,7 @@
 
 要标准化 transform 输出，codemod 未命中或不需要运行时请 return null，命中时才 return 修改后内容。
 
-**注意：不能所有都 return 文件内容！会影响 check 方法结果！**
+**注意：不能所有都 return 文件内容！会影响 check 方法结果！写文件的操作必须判断 `options.dry !== true`**
 
 ## 2. 入参说明
 

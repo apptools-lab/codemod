@@ -162,7 +162,7 @@ module.exports = (fileInfo, api, options) => {
         }
 
         // 3. generate files
-        if (generateFiles) {
+        if (options.dry !== true && generateFiles) {
           fs.writeFileSync(path.join(dir, generateFiles.ignoreFile), IGNORE_FILE_TEMPLATE, 'utf8');
           fs.writeFileSync(path.join(dir, generateFiles.configFile), ejs.render(generateFiles.configFileTemplate, { ruleKey, eslintRuleKey, customConfig }), 'utf8');
         }
