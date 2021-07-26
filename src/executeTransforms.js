@@ -44,10 +44,8 @@ async function executeTransforms(cwd, files, transforms, mode, jscodeshiftAgs) {
 
         if (
           mode === 'run' ||
-          // check mode return can run codemods when
-          // 1. jscodeshift running well and show not 0 ok if matched
-          // 2. codemod which severity >= 1
-          (/ok\n/.test(output) && !/\n0 ok\n/.test(output) && transformConfig.severity >= 1)
+          // check mode return can run codemods when jscodeshift running ok and show changed count
+          (/ok\n/.test(output) && !/\n0 ok\n/.test(output))
         ) {
           resolve({
             ...transformConfig,

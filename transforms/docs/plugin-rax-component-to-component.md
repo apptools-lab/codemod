@@ -66,4 +66,4 @@
 1. 小程序相关的模版代码将自动生成，原 miniapp 目录移除，如果有自定义小程序 props 属性的测试需求，可以增加 miniapp-demo 目录
 2. demo 目录下不再支持 index.j|tsx 文件，demo 文件均采用 \*.md
 
-如组件工程迁移过程中遇到问题请通过 [issue](https://github.com/ice-lab/iceworks-cli/issues) 进行反馈。
+如组件工程迁移过程中遇到问题请通过 [issue](https://github.com/appworks-lab/codemod) 进行反馈。
