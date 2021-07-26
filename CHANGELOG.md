@@ -1,8 +1,9 @@
 # changelog
 
-## 0.1.3
+## 0.2.0
 
 - Feat: add transform - `lint-config-to-spec`
+- Feat: Update check mode, return all codemods that can run in your project
 ## 0.1.2
 
 - Feat: update jscodeshift executable path.
