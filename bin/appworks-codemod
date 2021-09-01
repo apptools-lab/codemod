@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const glob = require('glob');
+const getTransforms = require('../src/getTransforms');
 const executeTransforms = require('../src/executeTransforms');
 const pkg = require('../package.json');
 
@@ -32,10 +33,11 @@ async function run() {
 
   let dir;
   let files;
-  let pathToTransformFile;
+  let transforms;
 
   try {
-    pathToTransformFile = require.resolve(path.join(__dirname, '../transforms/', transform));
+    transforms = getTransforms(transform);
+    console.log(transforms);
     // Get target files
     if (fs.statSync(target).isFile()) {
       dir = path.dirname(target);
@@ -46,7 +48,7 @@ async function run() {
     }
   } catch (e) {
     // Check transform and target
-    if (!pathToTransformFile) {
+    if (!transforms[0]) {
       console.log(`Transform '${transform}' not found, for example you can use 'plugin-rax-component-to-component'.`);
     } else {
       console.log(`Path '${target}' not found, please check.`);
@@ -57,7 +59,7 @@ async function run() {
   await executeTransforms(
     dir,
     files,
-    [pathToTransformFile],
+    transforms,
     'run',
     args.length > 2 ? args.slice(2) : [],
   );

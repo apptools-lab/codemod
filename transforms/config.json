@@ -1,18 +1,36 @@
 {
-  "plugin-rax-component-to-component": {
-    "title": "Rax 组件工程升级",
-    "title_en": "Rax component project upgrade",
-    "message": "从 plugin-rax-component 升级到 plugin-component",
-    "message_en": "upgrade from plugin-rax-component to plugin-component",
-    "severity": 1,
-    "npm_deprecate": "build-plugin-rax-component"
+
+  "maxBundleSize": {
+    "rax-app": 300
   },
-  "lint-config-to-spec": {
-    "title": "遵循阿里巴巴前端规范，并接入 @iceworks/spec 的最佳实践",
-    "title_en": "Follow Alibaba FED lint rules, and use @iceworks/spec best practices",
-    "message": "遵循阿里巴巴前端规范，并更新 rax, ice 和 react 项目中的 eslint / stylelint / prettier 配置。",
-    "message_en": "Follow Alibaba FED lint rules, and update eslint / stylelint / prettier in rax, ice and react project.",
-    "severity": 0,
-    "npm_deprecate": "@ice/spec"
+  "codemods": {
+    "plugin-rax-component-to-component": {
+      "title": "Rax 组件工程升级",
+      "title_en": "Rax component project upgrade",
+      "message": "从 plugin-rax-component 升级到 plugin-component",
+      "message_en": "upgrade from plugin-rax-component to plugin-component",
+      "severity": 1,
+      "npm_deprecate": "build-plugin-rax-component",
+      "docs": "https://github.com/appworks-lab/codemod/blob/master/transforms/docs/plugin-rax-component-to-component.md"
+    },
+    "lint-config-to-spec": {
+      "title": "遵循阿里巴巴前端规范，并接入 @iceworks/spec 的最佳实践",
+      "title_en": "Follow Alibaba FED lint rules, and use @iceworks/spec best practices",
+      "message": "遵循阿里巴巴前端规范，并更新 rax, ice 和 react 项目中的 eslint / stylelint / prettier 配置。",
+      "message_en": "Follow Alibaba FED lint rules, and update eslint / stylelint / prettier in rax, ice and react project.",
+      "severity": 0,
+      "npm_deprecate": "@ice/spec",
+      "docs": "https://github.com/appworks-lab/codemod/blob/master/transforms/docs/lint-config-to-spec.md"
+    },
+    "rax-app": {
+      "title": "Rax 工程升级",
+      "title_en": "Rax project upgrade",
+      "message": "rax-app 从 2.x 升级到 3.x",
+      "message_en": "rax-app upgrade from 2.x to 3.x",
+      "severity": 1,
+      "docs": "xxx",
+      "package": "rax-codemod",
+      "transform": "lib/transforms/app/app.json.js"
+    }
   }
 }
