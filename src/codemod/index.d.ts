@@ -11,5 +11,13 @@ export interface IResult {
   npm_deprecate?: string; // same as https://docs.npmjs.com/cli/v7/commands/npm-deprecate/
 }
 
-export function check(cwd: string, files: string[]): Promise<IResult[]>;
-export function run(cwd: string, files: string[], transform: string): Promise<IResult>;
+export type severity = 'off' | 'warn' | 'error';
+
+export interface ITransforms {
+  [name: string]: severity;
+}
+
+// export function check(cwd: string, files: string[]): Promise<IResult[]>;
+// export function fix(cwd: string, files: string[], transform: string): Promise<IResult[]>;
+
+export function run(cwd: string, transforms: ITransforms, mode: 'check' | 'fix'): Promise<IResult[]>;

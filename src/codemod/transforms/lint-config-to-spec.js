@@ -102,7 +102,6 @@ module.exports = (fileInfo, api, options) => {
     // 'ts' | 'js';
     eslintRuleKey += '-ts';
   }
-
   // Only process once
   if (basename === 'package.json') {
     const config = JSON.parse(fileInfo.source);

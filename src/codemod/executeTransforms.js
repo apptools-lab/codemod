@@ -1,7 +1,6 @@
-const path = require('path');
 const execa = require('execa');
 const { getProjectType, getProjectFramework, getProjectLanguageType } = require('@appworks/project-utils');
-const config = require('../transforms/config.json');
+const config = require('./transforms/config.json');
 
 // Using 'jscodeshift/bin/jscodeshift' instead of '.bin/jscodeshift'
 // For VS Code Extension environment which has been deleted '.bin/jscodeshift' by vsce
@@ -16,35 +15,44 @@ async function executeTransforms(cwd, files, transforms, mode, jscodeshiftAgs) {
     `--projectLanguageType=${await getProjectLanguageType(cwd)}`,
   ];
 
-  const workers = transforms.map((transform) => {
+  const workers = Object.entries(transforms).map(([transformName, severity]) => {
     return new Promise((resolve) => {
       let output = '';
       let args = mode === 'check' ? ['--dry'] : [];
 
-      args = args.concat(['--transform', transform]);
+      args = args.concat(['--transform', transformName]);
       args = args.concat(files);
       args = args.concat(jscodeshiftAgs || []);
       args = args.concat(transformOptions);
 
-      const transformName = path.basename(transform, path.extname(transform));
-      const transformConfig = config[transformName] || {};
+      if (!(transformName in config)) {
+        // if user set transform not in our config, return null.
+        resolve(null);
+      }
 
+      const transformConfig = transformName in config ?
+        {
+          ...config[transformName],
+          severity,
+        } : {};
       const childProcess = execa(jscodeshiftExecutable, args);
-
       console.log(`Transform '${transformName}' start.`);
 
       childProcess.stdout.pipe(process.stdout);
       childProcess.stdout.on('data', (data) => {
+        console.log('data', data);
         output += data.toString();
       });
+
 
       childProcess.on('exit', () => {
         // Remove all colors/styles from strings https://stackoverflow.com/questions/25245716/remove-all-ansi-colors-styles-from-strings
         output = output.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 
         if (
-          mode === 'run' ||
-          // check mode return can run codemods when jscodeshift running ok and show changed count
+          mode === 'fix' ||
+          // check mode return can run codemods to fix project
+          // when jscodeshift running ok and show changed count
           (/ok\n/.test(output) && !/\n0 ok\n/.test(output))
         ) {
           resolve({

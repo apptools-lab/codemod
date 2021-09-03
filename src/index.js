@@ -1,33 +1,39 @@
+const runCodemod = require('./codemod');
+const configs = require('./config');
 const path = require('path');
-const util = require('util');
-const glob = require('glob');
-const executeTransforms = require('./executeTransforms');
 
-const globPromise = util.promisify(glob);
 
-// check mode run jscodeshift dry mode and return the check results
-async function check(cwd, files) {
-  const transforms = await globPromise('../transforms/*.js', { cwd: __dirname, nodir: true, realpath: true });
-  const results = await executeTransforms(
-    cwd,
-    files,
-    transforms,
-    'check',
-  );
+const severityMap = {
+  off: 0,
+  warn: 1,
+  error: 2,
+};
 
-  return results;
+function transformConfig(data) {
+  if (typeof data !== 'object' || data == null) {
+    if (data in severityMap) {
+      return severityMap[data];
+    }
+    return data;
+  }
+  const proxyConfig = {
+    get(target, key, receiver) {
+      const res = Reflect.get(target, key, receiver);
+      return transformConfig(res);
+    },
+  };
+  return new Proxy(data, proxyConfig);
 }
 
-// run mode run jscodeshift write mode and return the cli output string
-async function run(cwd, files, transform) {
-  const results = await executeTransforms(
-    cwd,
-    files,
-    [require.resolve(path.join(__dirname, '../transforms/', transform))],
-    'run',
-  );
-  // just run one codemod each time
-  return results[0];
+async function run(cwd, config, fix = false) {
+  config = JSON.parse(JSON.stringify(transformConfig(config)));
+  const result = {
+    codemod: await runCodemod(cwd, config.codemod, fix ? 'fix' : 'check') || undefined,
+  };
+  console.log(result);
+  if (!fix) {
+    return JSON.parse(JSON.stringify(result));
+  }
 }
 
-module.exports = { check, run };
+run(path.resolve(__dirname, '../__code'), configs, false);
