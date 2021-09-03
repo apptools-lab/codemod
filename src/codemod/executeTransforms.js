@@ -1,4 +1,5 @@
 const execa = require('execa');
+const path = require('path');
 const { getProjectType, getProjectFramework, getProjectLanguageType } = require('@appworks/project-utils');
 const config = require('./transforms/config.json');
 
@@ -7,7 +8,7 @@ const config = require('./transforms/config.json');
 // By the way '!node_modules/.bin/jscodeshift' in .vsceignore doesn't work
 const jscodeshiftExecutable = require.resolve('jscodeshift/bin/jscodeshift');
 
-async function executeTransforms(cwd, files, transforms, mode, jscodeshiftAgs) {
+async function executeTransforms(cwd, files, rules, mode, jscodeshiftAgs) {
   // Add project info to transform option
   const transformOptions = [
     `--projectType=${await getProjectType(cwd, true)}`,
@@ -15,32 +16,27 @@ async function executeTransforms(cwd, files, transforms, mode, jscodeshiftAgs) {
     `--projectLanguageType=${await getProjectLanguageType(cwd)}`,
   ];
 
-  const workers = Object.entries(transforms).map(([transformName, severity]) => {
+  const workers = Object.entries(rules).map(([transformName, severity]) => {
     return new Promise((resolve) => {
+      // it return, if user set transform not in our config
+      if (!(transformName in config)) {
+        return;
+      }
       let output = '';
       let args = mode === 'check' ? ['--dry'] : [];
-
-      args = args.concat(['--transform', transformName]);
+      const transform = path.resolve(__dirname, `./transforms/${transformName}.js`);
+      args = args.concat(['--transform', transform]);
       args = args.concat(files);
       args = args.concat(jscodeshiftAgs || []);
       args = args.concat(transformOptions);
-
-      if (!(transformName in config)) {
-        // if user set transform not in our config, return null.
-        resolve(null);
-      }
-
-      const transformConfig = transformName in config ?
-        {
-          ...config[transformName],
-          severity,
-        } : {};
+      const transformConfig = {
+        ...config[transformName],
+        severity,
+      };
       const childProcess = execa(jscodeshiftExecutable, args);
-      console.log(`Transform '${transformName}' start.`);
 
       childProcess.stdout.pipe(process.stdout);
       childProcess.stdout.on('data', (data) => {
-        console.log('data', data);
         output += data.toString();
       });
 

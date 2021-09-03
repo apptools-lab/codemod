@@ -1,6 +1,4 @@
 const runCodemod = require('./codemod');
-const configs = require('./config');
-const path = require('path');
 
 
 const severityMap = {
@@ -30,10 +28,8 @@ async function run(cwd, config, fix = false) {
   const result = {
     codemod: await runCodemod(cwd, config.codemod, fix ? 'fix' : 'check') || undefined,
   };
-  console.log(result);
-  if (!fix) {
-    return JSON.parse(JSON.stringify(result));
-  }
+  return JSON.parse(JSON.stringify(result));
 }
 
-run(path.resolve(__dirname, '../__code'), configs, false);
+module.exports = run;
+
