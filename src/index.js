@@ -7,6 +7,7 @@ const severityMap = {
   error: 2,
 };
 
+// use proxy to deep transform severity.
 function transformConfig(data) {
   if (typeof data !== 'object' || data == null) {
     if (data in severityMap) {
@@ -24,6 +25,8 @@ function transformConfig(data) {
 }
 
 async function run(cwd, config, fix = false) {
+  // deep transform the config
+  // eslint-disable-next-line no-param-reassign
   config = JSON.parse(JSON.stringify(transformConfig(config)));
   const result = {
     codemod: await runCodemod(cwd, config.codemod, fix ? 'fix' : 'check') || undefined,

@@ -18,7 +18,7 @@ async function executeTransforms(cwd, files, rules, mode, jscodeshiftAgs) {
 
   const workers = Object.entries(rules).map(([transformName, severity]) => {
     return new Promise((resolve) => {
-      // it return, if user set transform not in our config
+      // it return, if user set transform is't in our config
       if (!(transformName in config)) {
         return;
       }
@@ -29,6 +29,7 @@ async function executeTransforms(cwd, files, rules, mode, jscodeshiftAgs) {
       args = args.concat(files);
       args = args.concat(jscodeshiftAgs || []);
       args = args.concat(transformOptions);
+      // the priority that user config the transform is highest.
       const transformConfig = {
         ...config[transformName],
         severity,
