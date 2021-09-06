@@ -29,7 +29,6 @@ async function executeTransforms(cwd, files, rules, mode, jscodeshiftAgs) {
         severity,
       };
       const transformFile = getTransformFile(transformName, transformConfig);
-      console.log(transformFile);
       args = args.concat(['--transform', transformFile]);
       args = args.concat(files);
       args = args.concat(jscodeshiftAgs || []);
