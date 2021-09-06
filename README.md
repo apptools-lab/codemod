@@ -1,7 +1,5 @@
 # @appworks/project-lint
 
-
-
 Lint tool on project level for [rax](https://rax.js.org/), [ice](https://ice.work/) and react project.
 
 ## Install
@@ -11,11 +9,10 @@ $ npm i @appworks/projec-lint --save-dev
 ```
 
 ## Usage
-### API
 
-#### Run()
+### Run()
 
-You can use the `run` method to execute specific codemod.
+You can use the `run` method to execute project-lint.
 
 Options:
 
@@ -35,9 +32,9 @@ import run from "@appworks/project-lint";
 const dir = "/xxx/xx";
 
 const config = {
-	'plugin-rax-component-to-component': 'error',
-  'lint-config-to-spec': 'warn',
-}
+  "plugin-rax-component-to-component": "error",
+  "lint-config-to-spec": "warn",
+};
 
 run(dir, config, true);
 ```
@@ -61,7 +58,7 @@ interface ICodemodResult {
 }
 
 interface IResult {
-	codemod: ICodemodResult[]; // codemod result.
+  codemod: ICodemodResult[]; // codemod result.
   [rule: string]: any;
 }
 ```
