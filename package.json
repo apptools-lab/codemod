@@ -1,16 +1,13 @@
 {
-  "name": "@appworks/codemod",
-  "description": "AppWorks codemod scripts",
-  "version": "0.2.0",
+  "name": "@appworks/project-lint",
+  "description": "Lint tool on project level",
+  "version": "1.0.0",
   "keywords": [
-    "appworks",
+    "project-lint",
     "codemod",
     "rax-app",
     "icejs"
   ],
-  "bin": {
-    "appworks-codemod": "bin/appworks-codemod"
-  },
   "files": [
     "bin/",
     "src/",

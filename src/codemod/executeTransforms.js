@@ -1,7 +1,7 @@
 const execa = require('execa');
-const path = require('path');
 const { getProjectType, getProjectFramework, getProjectLanguageType } = require('@appworks/project-utils');
 const config = require('./transforms/config.json');
+const getTransformFile = require('./getTransformFile');
 
 // Using 'jscodeshift/bin/jscodeshift' instead of '.bin/jscodeshift'
 // For VS Code Extension environment which has been deleted '.bin/jscodeshift' by vsce
@@ -15,7 +15,6 @@ async function executeTransforms(cwd, files, rules, mode, jscodeshiftAgs) {
     `--projectFramework=${await getProjectFramework(cwd)}`,
     `--projectLanguageType=${await getProjectLanguageType(cwd)}`,
   ];
-
   const workers = Object.entries(rules).map(([transformName, severity]) => {
     return new Promise((resolve) => {
       // it return, if user set transform is't in our config
@@ -24,16 +23,19 @@ async function executeTransforms(cwd, files, rules, mode, jscodeshiftAgs) {
       }
       let output = '';
       let args = mode === 'check' ? ['--dry'] : [];
-      const transform = path.resolve(__dirname, `./transforms/${transformName}.js`);
-      args = args.concat(['--transform', transform]);
-      args = args.concat(files);
-      args = args.concat(jscodeshiftAgs || []);
-      args = args.concat(transformOptions);
-      // the priority that user config the transform is highest.
+
       const transformConfig = {
         ...config[transformName],
         severity,
       };
+      const transformFile = getTransformFile(transformName, transformConfig);
+      console.log(transformFile);
+      args = args.concat(['--transform', transformFile]);
+      args = args.concat(files);
+      args = args.concat(jscodeshiftAgs || []);
+      args = args.concat(transformOptions);
+      // the priority that user config the transform is highest.
+
       const childProcess = execa(jscodeshiftExecutable, args);
 
       childProcess.stdout.pipe(process.stdout);

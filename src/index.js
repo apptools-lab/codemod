@@ -1,6 +1,5 @@
 const runCodemod = require('./codemod');
 
-
 const severityMap = {
   off: 0,
   warn: 1,

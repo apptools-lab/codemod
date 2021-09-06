@@ -1,5 +1,10 @@
 # changelog
 
+## 1.0.0
+
+- Feat: migrate codemod into project-lint.
+- Feat: require codemod from other modules.
+
 ## 0.2.0
 
 - Feat: add transform - `lint-config-to-spec`
