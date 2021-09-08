@@ -5,6 +5,9 @@
     "message": "从 plugin-rax-component 升级到 plugin-component",
     "message_en": "upgrade from plugin-rax-component to plugin-component",
     "severity": 1,
+    "docs": "https://rax.js.org/docs/guide/com-migration",
+    "package": "rax-codemod",
+    "transform": "lib/transforms/components/plugin-rax-component-to-component.js",
     "npm_deprecate": "build-plugin-rax-component"
   },
   "lint-config-to-spec": {

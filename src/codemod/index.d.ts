@@ -24,4 +24,4 @@ export interface IRules {
 // export function check(cwd: string, files: string[]): Promise<IResult[]>;
 // export function fix(cwd: string, files: string[], transform: string): Promise<IResult[]>;
 
-export function run(cwd: string, rules: IRules, mode: 'check' | 'fix'): Promise<ICodemodResult[]>;
+export default function run(cwd: string, rules: IRules, mode: 'check' | 'fix'): Promise<ICodemodResult[]>;

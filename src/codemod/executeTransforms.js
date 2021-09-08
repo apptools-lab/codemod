@@ -1,6 +1,6 @@
 const execa = require('execa');
 const { getProjectType, getProjectFramework, getProjectLanguageType } = require('@appworks/project-utils');
-const config = require('./transforms/config.json');
+const config = require('./config.json');
 const getTransformFile = require('./getTransformFile');
 
 // Using 'jscodeshift/bin/jscodeshift' instead of '.bin/jscodeshift'
@@ -54,10 +54,10 @@ async function executeTransforms(cwd, files, rules, mode, jscodeshiftAgs) {
           (/ok\n/.test(output) && !/\n0 ok\n/.test(output))
         ) {
           resolve({
-            ...transformConfig,
             transform: transformName,
             docs: `https://github.com/appworks-lab/codemod/tree/master/transforms/docs/${transformName}.md`,
             mode,
+            ...transformConfig,
             output,
           });
         }

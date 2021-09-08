@@ -5,7 +5,7 @@ Lint tool on project level for [rax](https://rax.js.org/), [ice](https://ice.wor
 ## Install
 
 ```bash
-$ npm i @appworks/projec-lint --save-dev
+$ npm i @appworks/project-lint --save-dev
 ```
 
 ## Usage
@@ -17,12 +17,12 @@ You can use the `run` method to execute project-lint.
 Options:
 
 - cwd: string, the target directory path
-- config: object, the projectlint configuration.
+- config: object, the project-lint configuration.
 - fix? : boolean, pre-check or fix the target source code. default: false.
 
 Return:
 
-- result: IResult (see interface), run projectlint result.
+- result: IResult (see interface), run project-lint result.
 
 Example:
 

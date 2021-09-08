@@ -5,4 +5,4 @@ export interface IResult {
   [rule: string]: any;
 }
 
-export function run(cwd: string, config: any, fix: boolean): Promise<IResult>;
+export default function run(cwd: string, config: any, fix: boolean): Promise<IResult>;
