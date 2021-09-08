@@ -4,6 +4,7 @@
 
 - Feat: migrate codemod into project-lint.
 - Feat: require codemod from other modules.
+- Chore: migrate `plugin-rax-component-to-component` codemod transform into rax-codemod
 
 ## 0.2.0
 
